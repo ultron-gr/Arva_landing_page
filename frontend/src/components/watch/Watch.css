@@ -1,0 +1,342 @@
+/* ---------- registered (animatable) properties ---------- */
+@property --sec  { syntax:'<angle>';  inherits:true; initial-value:0deg; }
+@property --min  { syntax:'<angle>';  inherits:true; initial-value:0deg; }
+@property --burst{ syntax:'<number>'; inherits:true; initial-value:0; }
+
+/* ---------- watch container ---------- */
+.watch-tilt {
+  width: var(--size);
+  height: var(--size);
+  flex: none;
+  transform: rotate(22deg);
+  transform-origin: 50% 50%;
+}
+.watch {
+  --size: 560px;
+  --face-inset: 8.5%;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* matte leather-look straps, dark, with a faint lit edge on the gold side */
+.strap {
+  position: absolute; left: 50%; top: 50%;
+  width: 240%; height: 22%;
+  margin-top: -11%;
+  transform-origin: 0 50%;
+  border-radius: 0 12px 12px 0;
+  z-index: 0;
+  --c: #ffc93c; --c-deep: #ff9a00;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.05), transparent 30%, transparent 70%, rgba(0,0,0,.55)),
+    linear-gradient(90deg, #17181c 0%, #111216 45%, #0b0c0e 100%);
+  box-shadow: 0 30px 60px rgba(0,0,0,.6);
+}
+.strap--top    { transform: rotate(180deg); }
+.strap--bottom { transform: rotate(0deg); --c: #e9eefc; --c-deep: #8d97b8; }
+
+/* soft light + lit dots, brightest near the case, gone by ~65% of the strap */
+.strap::before {                       /* glow */
+  content: ''; position: absolute; inset: -12% 0; border-radius: 999px;
+  background: linear-gradient(90deg, var(--c) 0%, var(--c) 14%, var(--c-deep) 36%, transparent 62%);
+  filter: blur(26px); opacity: .32;
+}
+.strap::after {                        /* dots */
+  content: ''; position: absolute; inset: 0; border-radius: inherit;
+  background: linear-gradient(90deg, #fff 0%, var(--c) 14%, var(--c-deep) 42%, transparent 66%);
+  -webkit-mask:
+    linear-gradient(180deg, transparent 4%, #000 22%, #000 78%, transparent 96%),
+    radial-gradient(circle, #000 .95px, transparent 1.55px) 0 0 / 6px 6px;
+  mask:
+    linear-gradient(180deg, transparent 4%, #000 22%, #000 78%, transparent 96%),
+    radial-gradient(circle, #000 .95px, transparent 1.55px) 0 0 / 6px 6px;
+  -webkit-mask-composite: source-in; mask-composite: intersect;
+  opacity: .7;
+}
+/* pulse the strap light with the burst */
+.strap::before, .strap::after { filter: brightness(calc(1 + .5 * var(--burst))); }
+.strap::before { filter: blur(26px) brightness(calc(1 + .5 * var(--burst))); }
+
+.watch__aura {
+  position: absolute; 
+  inset: -35%; 
+  border-radius: 50%; 
+  z-index: 0; 
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,201,60,.22), transparent 45%),
+    radial-gradient(circle at 72% 72%, rgba(233,238,252,.14), transparent 45%);
+  filter: blur(40px) brightness(calc(1 + .35 * var(--burst)));
+  animation: aura 9s ease-in-out infinite alternate;
+}
+
+@keyframes aura {
+  from { transform: rotate(0deg) scale(1);   opacity:.85; }
+  to   { transform: rotate(18deg) scale(1.08); opacity:1; }
+}
+
+/* ---------- case ---------- */
+.watch__case {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 42%, #2a2b31 0%, #1e1f24 48%, #17181c 74%, #101114 92%, #0b0c0e 100%);
+  box-shadow:
+    0 40px 90px rgba(0, 0, 0, 0.8),
+    0 10px 30px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -10px 24px rgba(0, 0, 0, 0.55);
+}
+.watch__case::after {
+  content: '';
+  position: absolute;
+  inset: 5.5%;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.045),
+    inset 0 0 0 4px rgba(0, 0, 0, 0.35),
+    inset 0 4px 12px rgba(0, 0, 0, 0.7);
+}
+.watch__crown {
+  position: absolute;
+  right: -1.8%;
+  top: 46.5%;
+  width: 5%;
+  height: 7%;
+  border-radius: 12% / 30%;
+  background: linear-gradient(180deg, #2c2d33, #17181c 55%, #0e0f12);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ---------- face ---------- */
+.watch__face {
+  position: absolute;
+  inset: var(--face-inset);
+  border-radius: 50%;
+  background: #0a0b0e;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.9),
+    inset 0 0 50px rgba(0, 0, 0, 0.9),
+    inset 0 12px 30px rgba(0, 0, 0, 0.7);
+  isolation: isolate;
+  container-type: inline-size;
+  rotate: -22deg;
+  --second-angle: calc(var(--second-base) + var(--sec));
+  --minute-angle: calc(var(--minute-base) + var(--min));
+  animation: f1-sec 6s infinite, f1-min 12s infinite, f1-burst 6s infinite;
+  animation-timing-function: linear;
+}
+.watch__dots {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0.9px, transparent 1.4px) 0 0 / 6px 6px;
+  z-index: 1;
+}
+.watch__dial {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
+.watch__glass {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 0%, rgba(255, 255, 255, 0.05), transparent 70%),
+    radial-gradient(circle at 50% 50%, transparent 60%, rgba(0, 0, 0, 0.55) 100%);
+  z-index: 8;
+  pointer-events: none;
+}
+
+/* ---------- embossed mark ---------- */
+.watch__mark {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 3;
+  pointer-events: none;
+}
+.mark {
+  grid-area: 1/1;
+  font-size: 28cqi;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.04em;
+  color: #15161a;
+  font-family: Inter, system-ui, sans-serif;
+}
+.mark--shadow {
+  color: #000;
+  translate: 0 2px;
+  filter: blur(1.5px);
+  opacity: .9;
+}
+.mark--light {
+  color: rgba(255,255,255,.07);
+  translate: 0 -1px;
+}
+.mark--edge {
+  color: transparent;
+  -webkit-text-stroke: 0.5px #cfd3db;
+  paint-order: stroke;
+  -webkit-mask-image: linear-gradient(180deg, #fff 0%, rgba(255,255,255,.55) 45%, rgba(255,255,255,.12) 100%);
+  mask-image:         linear-gradient(180deg, #fff 0%, rgba(255,255,255,.55) 45%, rgba(255,255,255,.12) 100%);
+  opacity: .7;
+}
+
+/* ---------- trails ---------- */
+.trail {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--d);
+  height: var(--d);
+  translate: -50% -50%;
+  border-radius: 50%;
+  z-index: 5;
+  pointer-events: none;
+  --len: calc(20deg + 200deg * var(--burst));
+  background: conic-gradient(from calc(var(--angle) - var(--len)),
+    transparent 0deg,
+    color-mix(in srgb, var(--c-deep) 50%, transparent) calc(var(--len) * .25),
+    var(--c-deep) calc(var(--len) * .55),
+    var(--c)      calc(var(--len) * .88),
+    var(--c-hot)  calc(var(--len) - 2deg),
+    #fff          var(--len),
+    transparent   var(--len));
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--w) - 1px), #000 calc(100% - var(--w)), #000 calc(100% - 1px), transparent 100%);
+  mask:         radial-gradient(farthest-side, transparent calc(100% - var(--w) - 1px), #000 calc(100% - var(--w)), #000 calc(100% - 1px), transparent 100%);
+  opacity: var(--burst);
+}
+.trail--core { --w: 2.5px; }
+.trail--mid  { --w: 9px;  filter: blur(3.5px); scale: 1.01; }
+.trail--glow { --w: 30px; filter: blur(20px);  scale: 1.08; opacity: calc(var(--burst)*.8); }
+
+.trail-bloom {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  width: 0;
+  height: calc(var(--d) / 2);
+  transform-origin: 50% 100%;
+  transform: rotate(var(--angle));
+  z-index: 5;
+  pointer-events: none;
+}
+.trail-bloom::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 24px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff, var(--c-hot), transparent);
+  filter: blur(2px);
+  scale: calc(.4 + 1.1 * var(--burst));
+  opacity: calc(var(--burst) * 1.4);
+}
+
+/* ---------- hands ---------- */
+.hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform-origin: 50% 100%;
+  z-index: 6;
+  border-radius: 99px;
+  box-shadow: 0 6px 12px rgba(0,0,0,.75), 0 0 1px rgba(255,255,255,.25);
+}
+.hand::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 10%;
+  border-radius: 99px;
+  background: linear-gradient(180deg, rgba(255,255,255,.8), transparent);
+}
+.hand--hour {
+  width: 6px;
+  height: 24%;
+  margin-left: -3px;
+  background: linear-gradient(90deg, #8b8f99 0%, #ffffff 38%, #d9dce3 52%, #6d717b 100%);
+  transform: rotate(var(--hour-base));
+}
+.hand--minute {
+  width: 4.5px;
+  height: 36%;
+  margin-left: -2.25px;
+  background: linear-gradient(90deg, #8a5a00 0%, #ffd96a 36%, #fff3c4 50%, #c48a12 100%);
+  transform: rotate(var(--minute-angle));
+}
+.hand--second {
+  width: 1.6px;
+  height: 44%;
+  margin-left: -.8px;
+  bottom: calc(50% - 11%);
+  transform-origin: 50% 75%;
+  background: linear-gradient(180deg, #fff0b8 0%, #ffc93c 45%, #b8860b 80%, #7a5800 100%);
+  transform: rotate(var(--second-angle));
+}
+.hand--second::before {
+  content: ''; position: absolute; left: 50%; bottom: 0; width: 5px; height: 25%;
+  translate: -50% 0; border-radius: 99px;
+  background: linear-gradient(180deg, #b8860b, #7a5800);
+}
+
+.watch__pin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3%;
+  height: 3%;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #a1a4ad, #4a4d55 70%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+  z-index: 7;
+}
+
+/* second hand — 6 s cycle */
+@keyframes f1-sec {
+  0%    { --sec: 0deg;    animation-timing-function: linear; }                 /* cruise 0–3.0 s   */
+  50%   { --sec: 18deg;   animation-timing-function: cubic-bezier(.5,0,.9,.4); } /* wind-up 150 ms  */
+  52.5% { --sec: 34deg;   animation-timing-function: cubic-bezier(.05,.9,.2,1); }/* throw   0.5 s   */
+  61%   { --sec: 610deg;  animation-timing-function: cubic-bezier(.2,.7,.3,1); } /* bleed   0.9 s   */
+  76%   { --sec: 702deg;  animation-timing-function: linear; }                 /* cruise 4.56–6 s */
+  100%  { --sec: 720deg; }
+}
+
+/* minute hand — 12 s cycle, two 180° bursts locked to the second hand's */
+@keyframes f1-min {
+  0%     { --min: 0deg;      animation-timing-function: linear; }
+  25%    { --min: 0.3deg;    animation-timing-function: cubic-bezier(.5,0,.9,.4); }
+  26.25% { --min: 8deg;      animation-timing-function: cubic-bezier(.05,.9,.2,1); }
+  30.5%  { --min: 152deg;    animation-timing-function: cubic-bezier(.2,.7,.3,1); }
+  38%    { --min: 180.3deg;  animation-timing-function: linear; }
+  75%    { --min: 180.6deg;  animation-timing-function: cubic-bezier(.5,0,.9,.4); }
+  76.25% { --min: 188.6deg;  animation-timing-function: cubic-bezier(.05,.9,.2,1); }
+  80.5%  { --min: 332.6deg;  animation-timing-function: cubic-bezier(.2,.7,.3,1); }
+  88%    { --min: 360.6deg;  animation-timing-function: linear; }
+  100%   { --min: 361deg; }
+}
+
+/* burst intensity — ramps in during the wind-up (no pop), peaks at the throw, bleeds with the hands */
+@keyframes f1-burst {
+  0%, 49%  { --burst: 0; }
+  50%      { --burst: .25; }
+  52.5%    { --burst: 1; }
+  61%      { --burst: .6; }
+  76%      { --burst: 0; }
+  100%     { --burst: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .watch__aura, .watch__face { animation: none; --burst: 0; }
+}

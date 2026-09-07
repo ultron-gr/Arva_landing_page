@@ -14,6 +14,7 @@ const BrandDesign = lazy(() => import('../sections/BrandDesign').then((m) => ({ 
 const Process = lazy(() => import('../sections/Process').then((m) => ({ default: m.Process })));
 const Comparison = lazy(() => import('../sections/Comparison').then((m) => ({ default: m.Comparison })));
 const FinalCTA = lazy(() => import('../sections/FinalCTA').then((m) => ({ default: m.FinalCTA })));
+const RespectSection = lazy(() => import('../sections/RespectSection').then((m) => ({ default: m.RespectSection })));
 
 const BelowFoldFallback = () => (
   <div className="flex min-h-[40vh] items-center justify-center bg-[#0a0a0a]" aria-hidden="true" />
@@ -41,6 +42,7 @@ export default function Home() {
           <Process />
           <Comparison />
           <FinalCTA />
+          <RespectSection />
         </Suspense>
       </main>
       <Footer />
