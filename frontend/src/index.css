@@ -1,0 +1,152 @@
+/* Self-hosted fonts — bundled static assets via @fontsource, no third-party CDN */
+@import '@fontsource/anton/400.css';
+@import '@fontsource/inter/300.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------- tokens */
+:root {
+  color-scheme: dark;
+
+  --arva-bg: #0a0a0a;
+  --arva-surface: #111111;
+  --arva-surface-2: #151515;
+  --arva-border: rgba(255, 255, 255, 0.1);
+  --arva-border-strong: rgba(255, 255, 255, 0.16);
+  --arva-text: #f4f4f5;
+  --arva-text-muted: #b6b6b8;
+  --arva-text-subtle: #8b8b8f;
+  --arva-gold: #d4af37;
+  --arva-gold-muted: #c9a227;
+  /* Gold for TEXT \u2014 #D4AF37 passes AA on dark but fails on cream; cream swaps to a dark gold */
+  --arva-gold-text: #d4af37;
+  --arva-danger: #e5484d;
+  --arva-success: #2fbf71;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-1: 120ms;
+  --dur-2: 180ms;
+  --dur-3: 260ms;
+}
+
+/* Cream section token swap — wrap light sections in .theme-cream */
+.theme-cream {
+  color-scheme: light;
+  --arva-bg: #f6f1e6;
+  --arva-surface: #ffffff;
+  --arva-surface-2: #fbf7ef;
+  --arva-border: rgba(10, 10, 10, 0.12);
+  --arva-border-strong: rgba(10, 10, 10, 0.22);
+  --arva-text: #0a0a0a;
+  --arva-text-muted: #2b2b2b;
+  --arva-text-subtle: #4a4a4a;
+  --arva-text-disabled: rgba(10, 10, 10, 0.35);
+  --arva-gold-text: #7d620d; /* ~5:1 on #f6f1e6 \u2014 WCAG AA for the 12px eyebrows */
+  --arva-danger: #b42318;
+  --arva-success: #167d3e;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0a0a0a;
+  color: var(--arva-text);
+  @apply font-body antialiased;
+}
+
+::selection {
+  background: rgba(212, 175, 55, 0.85);
+  color: #0a0a0a;
+}
+
+/* ------------------------------------------------------------ skip link */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 16px;
+  z-index: 200;
+  padding: 12px 20px;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #0a0a0a;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: top var(--dur-2) var(--ease-out);
+}
+.skip-link:focus-visible {
+  top: 16px;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.6);
+}
+
+/* --------------------------------------------------------- focus states */
+:focus-visible {
+  outline: 2px solid var(--arva-gold);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------- reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 480ms var(--ease-out),
+    transform 480ms var(--ease-out);
+  will-change: opacity, transform;
+}
+.reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------------------------------------------------------------- misc */
+.gold-rule {
+  height: 2px;
+  width: 56px;
+  background: var(--arva-gold);
+}
+
+/* Subtle CSS noise — no image request, dark sections only */
+.noise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Decorative outlined numerals */
+.big-numeral {
+  -webkit-text-stroke: 1px rgba(212, 175, 55, 0.28);
+  color: transparent;
+  user-select: none;
+}
+.theme-cream .big-numeral {
+  -webkit-text-stroke: 1px rgba(10, 10, 10, 0.18);
+}
+
+/* ------------------------------------------------------ reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

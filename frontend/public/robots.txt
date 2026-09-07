@@ -1,0 +1,7 @@
+# ARVA Studios — robots
+# TODO(confirm with ARVA): update Sitemap host if the production domain differs from arvastudios.in
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://arvastudios.in/sitemap.xml

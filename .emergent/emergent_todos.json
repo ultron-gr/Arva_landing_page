@@ -1,0 +1,34 @@
+[
+  {
+    "content": "Phase 5: Four pillar detail sections + both pricing blocks (table↔cards)",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 6: Process + Comparison (mobile stacking)",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 7: Final CTA + lead form (all states, wired to backend) + E2E test",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 7: testing_agent full sweep — 100% pass (35 tests), test rows cleaned, simulation flag restored",
+    "status": "completed"
+  },
+  {
+    "content": "CHECKPOINT: Phase 7 review with user",
+    "status": "in_progress"
+  },
+  {
+    "content": "Phase 8: Responsive refinement pass across all 12 sections (360/640/768/1024/1280/1536)",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 9: Accessibility pass (skip link, focus rings, ARIA, contrast)",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 10: Performance pass + Lighthouse 90+ + sitemap/robots/SEO + full QA sweep → CHECKPOINT",
+    "status": "pending"
+  }
+]
