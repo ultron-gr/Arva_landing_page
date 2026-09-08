@@ -21,7 +21,7 @@ const TIERS = [
 
 /** 05 / Automation & AI — three labeled pricing tiers + retainer note. */
 export const AutomationAI = () => (
-  <section id="automation-ai" aria-labelledby="automation-ai-heading" className="scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[#0a0a0a]">
+  <section id="automation-ai" aria-labelledby="automation-ai-heading" className="scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[color:var(--arva-bg)] theme-cream">
     <div className="mx-auto w-full max-w-site px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
       <Reveal>
         <Eyebrow number="05" label="Automation & AI" />
@@ -39,7 +39,7 @@ export const AutomationAI = () => (
             <section
               aria-labelledby={`tier-${t.name.toLowerCase()}-heading`}
               data-testid={`automation-tier-${t.name.toLowerCase().replace(/[^a-z]/g, '')}`}
-              className="flex h-full flex-col rounded-xl border border-[color:var(--arva-border)] bg-[color:var(--arva-surface)] p-6 transition-colors duration-200 hover:border-[color:var(--arva-gold-muted)]"
+              className="flex h-full flex-col rounded-none border border-[color:var(--arva-border)] bg-[color:var(--arva-surface)] p-6 transition-colors duration-200 hover:border-[color:var(--arva-gold-muted)]"
             >
               <h3 id={`tier-${t.name.toLowerCase()}-heading`} className="font-display text-2xl uppercase tracking-[-0.01em] text-[color:var(--arva-text)]">
                 {t.name}

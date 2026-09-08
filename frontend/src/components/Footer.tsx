@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 import { CONTACT_EMAIL } from '../lib/config';
 
 const LINK_CLS =
-  'text-sm text-[color:var(--arva-text-muted)] transition-colors duration-200 hover:text-[color:var(--arva-text)] hover:underline decoration-[color:var(--arva-gold)] underline-offset-4 ' +
-  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--arva-gold)] rounded-sm inline-block py-1.5';
+  'text-sm font-body text-[color:var(--arva-text-muted)] transition-colors duration-200 hover:text-[color:var(--arva-text)] hover:underline decoration-[color:var(--arva-gold)] underline-offset-4 ' +
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--arva-gold)] rounded-none inline-block py-1.5';
 
 const COL_HEAD = 'mb-4 text-xs tracking-[0.28em] uppercase text-[color:var(--arva-text-subtle)]';
 
@@ -13,11 +13,11 @@ const INSTAGRAM_URL = 'https://www.instagram.com/arvastudios';
 const LINKEDIN_URL = 'https://www.linkedin.com/company/arvastudios';
 
 export const Footer = () => (
-  <footer data-testid="site-footer" className="border-t border-[color:var(--arva-border)] bg-black">
+  <footer data-testid="site-footer" className="border-t border-[color:var(--arva-border)] bg-[#0A0A0A]">
     <div className="mx-auto w-full max-w-site px-4 py-16 sm:px-6 lg:px-8">
       <div className="grid gap-12 lg:grid-cols-[1.4fr_repeat(3,1fr)]">
         <div>
-          <img src="/brand/arva-logo-tile.png" alt="ARVA Studios" width={48} height={48} className="h-12 w-12" />
+          <img src="/brand/FINAL_LOGO_1.png" alt="ARVA Studios" width={48} height={48} className="h-12 w-12" />
           <p className="mt-6 max-w-xs text-sm leading-relaxed text-[color:var(--arva-text-muted)]">
             We build the digital system behind your business.
           </p>

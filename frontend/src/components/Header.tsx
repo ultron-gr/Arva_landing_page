@@ -39,10 +39,10 @@ export const Header = () => {
           href="#hero"
           aria-label="ARVA Studios — back to top"
           data-testid="header-logo-link"
-          className="block shrink-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--arva-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
+          className="block shrink-0 rounded-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--arva-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
         >
           <img
-            src="/brand/arva-logo-tile.png"
+            src="/brand/FINAL_LOGO_1.png"
             alt="ARVA Studios"
             width={40}
             height={40}

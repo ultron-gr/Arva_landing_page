@@ -6,7 +6,7 @@ import { LeadForm } from '../components/LeadForm';
 
 /** 09 / Final CTA + inline lead-capture form — the page's conversion moment. */
 export const FinalCTA = () => (
-  <section id="contact" aria-labelledby="contact-heading" className="relative noise scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[#0a0a0a]">
+  <section id="contact" aria-labelledby="contact-heading" className="relative noise scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[#000000]">
     <div className="mx-auto w-full max-w-site px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
       <div className="grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
         <div>

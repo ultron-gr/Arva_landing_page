@@ -64,7 +64,7 @@ export const Pillars = () => (
       <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {PILLARS.map((p, i) => (
           <Reveal key={p.id} delay={i * 70}>
-            <article className="group flex h-full flex-col rounded-xl border border-[color:var(--arva-border)] bg-[color:var(--arva-surface)] p-6 transition-colors duration-200 hover:border-[color:var(--arva-gold-muted)]">
+            <article className="group flex h-full flex-col rounded-none border border-[color:var(--arva-border)] bg-[color:var(--arva-surface)] p-6 transition-colors duration-200 hover:border-[color:var(--arva-gold-muted)]">
               <p className="font-display text-4xl leading-none big-numeral" aria-hidden="true">
                 {String(i + 1).padStart(2, '0')}
               </p>
@@ -73,7 +73,7 @@ export const Pillars = () => (
               </h3>
               <ul className="mt-4 flex-1 space-y-2">
                 {p.services.map((s) => (
-                  <li key={s} className="text-sm text-[color:var(--arva-text-muted)]">
+                  <li key={s} className="text-sm font-body text-[color:var(--arva-text-muted)]">
                     {s}
                   </li>
                 ))}
@@ -82,7 +82,7 @@ export const Pillars = () => (
                 href={p.anchor}
                 aria-label={p.exploreLabel}
                 data-testid={p.testId}
-                className="mt-6 inline-flex min-h-[44px] items-center gap-2 self-start text-sm font-medium text-[color:var(--arva-text)] decoration-[color:var(--arva-gold)] underline-offset-4 transition-colors duration-200 group-hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--arva-gold)] rounded-sm"
+                className="mt-6 inline-flex min-h-[44px] items-center gap-2 self-start text-sm font-mono text-[color:var(--arva-gold)] decoration-[color:var(--arva-gold)] underline-offset-4 transition-colors duration-200 group-hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--arva-gold)] rounded-none"
               >
                 Explore <span aria-hidden="true">→</span>
               </a>

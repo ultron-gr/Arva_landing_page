@@ -26,7 +26,7 @@ const STEPS = [
 
 /** 07 / Process — cream section, ordered list, stacked at all sizes. */
 export const Process = () => (
-  <section id="process" aria-labelledby="process-heading" className="theme-cream scroll-mt-24 bg-[#f6f1e6] text-[#0a0a0a]">
+  <section id="process" aria-labelledby="process-heading" className="theme-cream scroll-mt-24 bg-[#F5F5F0] text-[#000000]">
     <div className="mx-auto w-full max-w-site px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
       <Reveal>
         <Eyebrow number="07" label="Process" />

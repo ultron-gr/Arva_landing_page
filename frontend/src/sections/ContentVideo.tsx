@@ -11,7 +11,7 @@ const SERVICES = [
 
 /** 03 / Content & Video — service list + side stat callout (below list on mobile). */
 export const ContentVideo = () => (
-  <section id="content-video" aria-labelledby="content-video-heading" className="relative scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[#0a0a0a]">
+  <section id="content-video" aria-labelledby="content-video-heading" className="relative scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[color:var(--arva-surface)] theme-cream">
     <div className="mx-auto w-full max-w-site px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
       <Reveal>
         <Eyebrow number="03" label="Content & Video" />
@@ -46,7 +46,7 @@ export const ContentVideo = () => (
           <aside
             aria-label="Content production stat"
             data-testid="content-video-stat-callout"
-            className="rounded-xl border border-[color:var(--arva-border)] bg-[color:var(--arva-surface)] p-8"
+            className="rounded-none border border-[color:var(--arva-border)] bg-[color:var(--arva-surface-2)] p-8"
           >
             <p className="font-display text-3xl uppercase leading-tight text-[color:var(--arva-text)]">
               One shoot day.
