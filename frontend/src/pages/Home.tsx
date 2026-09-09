@@ -1,5 +1,6 @@
 import { lazy, Suspense, useState } from 'react';
-import { Splash } from '../components/Splash';
+import { AnimatePresence } from 'framer-motion';
+import { IntroLoader } from '../components/intro/IntroLoader';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { Hero } from '../sections/Hero';
@@ -21,14 +22,16 @@ const BelowFoldFallback = () => (
 );
 
 export default function Home() {
-  const [splashDone, setSplashDone] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
 
   return (
     <>
       <a href="#main" className="skip-link" data-testid="skip-to-content-link">
         Skip to content
       </a>
-      {!splashDone && <Splash onDone={() => setSplashDone(true)} />}
+      <AnimatePresence>
+        {!introDone && <IntroLoader onDone={() => setIntroDone(true)} />}
+      </AnimatePresence>
       <Header />
       <main id="main">
         <Hero />
