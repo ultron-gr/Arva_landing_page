@@ -1,8 +1,5 @@
 /* Self-hosted fonts — bundled static assets via @fontsource, no third-party CDN */
-@import '@fontsource/anton/400.css';
-@import '@fontsource/inter/300.css';
-@import '@fontsource/inter/400.css';
-@import '@fontsource/inter/500.css';
+
 
 @tailwind base;
 @tailwind components;
@@ -12,20 +9,16 @@
 :root {
   color-scheme: dark;
 
-  --arva-bg: #0a0a0a;
-  --arva-surface: #111111;
-  --arva-surface-2: #151515;
-  --arva-border: rgba(255, 255, 255, 0.1);
-  --arva-border-strong: rgba(255, 255, 255, 0.16);
-  --arva-text: #f4f4f5;
-  --arva-text-muted: #b6b6b8;
-  --arva-text-subtle: #8b8b8f;
-  --arva-gold: #d4af37;
-  --arva-gold-muted: #c9a227;
-  /* Gold for TEXT \u2014 #D4AF37 passes AA on dark but fails on cream; cream swaps to a dark gold */
-  --arva-gold-text: #d4af37;
-  --arva-danger: #e5484d;
-  --arva-success: #2fbf71;
+  --arva-bg: #000000;
+  --arva-surface: #0A0A0A;
+  --arva-surface-2: #111111;
+  --arva-border: #1A1A1A;
+  --arva-border-strong: #3A3A3A;
+  --arva-text: #FFFFFF;
+  --arva-text-muted: #888888;
+  --arva-text-subtle: #888888;
+  --arva-gold: #C9A84C;
+  --arva-gold-text: #C9A84C;
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --dur-1: 120ms;
@@ -36,18 +29,16 @@
 /* Cream section token swap — wrap light sections in .theme-cream */
 .theme-cream {
   color-scheme: light;
-  --arva-bg: #f6f1e6;
-  --arva-surface: #ffffff;
-  --arva-surface-2: #fbf7ef;
-  --arva-border: rgba(10, 10, 10, 0.12);
-  --arva-border-strong: rgba(10, 10, 10, 0.22);
-  --arva-text: #0a0a0a;
-  --arva-text-muted: #2b2b2b;
-  --arva-text-subtle: #4a4a4a;
-  --arva-text-disabled: rgba(10, 10, 10, 0.35);
-  --arva-gold-text: #7d620d; /* ~5:1 on #f6f1e6 \u2014 WCAG AA for the 12px eyebrows */
-  --arva-danger: #b42318;
-  --arva-success: #167d3e;
+  --arva-bg: #F5F5F0;
+  --arva-surface: #FFFFFF;
+  --arva-surface-2: #F5F5F0;
+  --arva-border: #D4D4D4;
+  --arva-border-strong: #B0B0B0;
+  --arva-text: #000000;
+  --arva-text-muted: #3A3A3A;
+  --arva-text-subtle: #888888;
+  --arva-gold: #C9A84C;
+  --arva-gold-text: #C9A84C;
 }
 
 html {
@@ -55,14 +46,14 @@ html {
 }
 
 body {
-  background-color: #0a0a0a;
+  background-color: #000000;
   color: var(--arva-text);
   @apply font-body antialiased;
 }
 
 ::selection {
-  background: rgba(212, 175, 55, 0.85);
-  color: #0a0a0a;
+  background: #C9A84C;
+  color: #000000;
 }
 
 /* ------------------------------------------------------------ skip link */

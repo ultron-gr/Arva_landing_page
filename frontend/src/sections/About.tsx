@@ -34,14 +34,14 @@ export const About = () => (
         {STATS.map((s, i) => (
           <Reveal key={s.number} delay={i * 80}>
             <div
-              className="rounded-xl border border-[color:var(--arva-border)] bg-white p-6"
+              className="rounded-none border border-[color:var(--arva-border)] bg-white p-6"
               data-testid={`about-stat-${s.number}`}
             >
               <p className="font-display text-5xl leading-none">
                 {s.number}
                 <span className="text-[color:var(--arva-gold)]" aria-hidden="true">.</span>
               </p>
-              <p className="mt-3 text-xs uppercase tracking-[0.28em] text-[color:var(--arva-text-subtle)]">{s.label}</p>
+              <p className="mt-3 text-xs uppercase tracking-[0.28em] text-[color:var(--arva-text-subtle)] font-mono">{s.label}</p>
             </div>
           </Reveal>
         ))}

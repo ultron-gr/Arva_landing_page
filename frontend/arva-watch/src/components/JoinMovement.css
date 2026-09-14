@@ -1,0 +1,142 @@
+.cta {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+/* faint lift behind the watch so it doesn't sit on flat black */
+.cta::before {
+  content: '';
+  position: absolute;
+  left: 8%;
+  top: 50%;
+  width: 60vw;
+  height: 60vw;
+  translate: 0 -50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.035), transparent 60%);
+  pointer-events: none;
+}
+
+.cta__visual {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cta__visual .watch {
+  --size: clamp(280px, 29vw, 560px);
+}
+
+.cta__copy {
+  position: relative;
+  z-index: 2;
+  padding: 6rem 6vw 6rem 0;
+  max-width: 44rem;
+}
+
+.cta__title {
+  margin: 0 0 1.25rem;
+  font-size: clamp(2.75rem, 5.1vw, 6rem);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  background: linear-gradient(180deg, #ffffff 0%, #e8e6f4 70%, #cfcbe0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.cta__text {
+  margin: 0 0 2rem;
+  font-size: clamp(0.95rem, 0.95vw, 1.125rem);
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.5rem;
+  padding: 0 1.75rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: transform 0.25s ease, box-shadow 0.35s ease, background-color 0.25s ease;
+}
+.btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.btn--primary {
+  position: relative;
+  color: #ff5a1f;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.6),
+    0 0 22px 2px rgba(255, 110, 40, 0.55),
+    0 8px 30px rgba(255, 90, 31, 0.35);
+}
+.btn--primary::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(255, 140, 70, 0.9), rgba(255, 90, 31, 0.9));
+  z-index: -1;
+  filter: blur(4px);
+  opacity: 0.8;
+  transition: opacity 0.35s ease;
+}
+.btn--primary:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.8),
+    0 0 34px 6px rgba(255, 110, 40, 0.65),
+    0 12px 36px rgba(255, 90, 31, 0.45);
+}
+
+.btn--ghost {
+  color: #fff;
+  background: #0f1014;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+.btn--ghost:hover {
+  background: #17181d;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 960px) {
+  .cta {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding-block: 4rem 6rem;
+  }
+  .cta::before { left: 50%; translate: -50% -50%; top: 32%; }
+  .cta__visual { padding-block: 3rem; }
+  .cta__visual .watch { --size: clamp(240px, 62vw, 420px); }
+  .cta__copy {
+    padding: 2rem 1.5rem 0;
+    max-width: none;
+    justify-self: center;
+  }
+  .cta__actions { justify-content: center; }
+}

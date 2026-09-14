@@ -12,7 +12,7 @@ const ITEMS = [
 
 /** 06 / Brand Design — 6-item grid: 1 col @360, 2 @sm, 3 @lg. */
 export const BrandDesign = () => (
-  <section id="brand-design" aria-labelledby="brand-design-heading" className="scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[#0a0a0a]">
+  <section id="brand-design" aria-labelledby="brand-design-heading" className="scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[#000000]">
     <div className="mx-auto w-full max-w-site px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
       <Reveal>
         <Eyebrow number="06" label="Brand Design" />
@@ -27,7 +27,7 @@ export const BrandDesign = () => (
       <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-testid="brand-design-grid">
         {ITEMS.map((item, i) => (
           <Reveal key={item.name} delay={i * 60}>
-            <div className="group h-full rounded-xl border border-[color:var(--arva-border)] bg-[color:var(--arva-surface)] p-6 transition-colors duration-200 hover:border-[color:var(--arva-gold-muted)]">
+            <div className="group h-full rounded-none border border-[color:var(--arva-border)] bg-[color:var(--arva-surface)] p-6 transition-colors duration-200 hover:border-[color:var(--arva-gold-muted)]">
               <p className="font-display text-2xl leading-none big-numeral" aria-hidden="true">
                 {String(i + 1).padStart(2, '0')}
               </p>

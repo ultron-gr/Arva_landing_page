@@ -1,0 +1,292 @@
+/* ---------- registered (animatable) properties ---------- */
+@property --sec   { syntax: '<angle>';  inherits: true; initial-value: 0deg; }
+@property --min   { syntax: '<angle>';  inherits: true; initial-value: 0deg; }
+@property --burst { syntax: '<number>'; inherits: true; initial-value: 0; }
+
+/* ---------- watch ---------- */
+.watch {
+  --size: 560px;
+  --face-inset: 8.5%;
+  --second-angle: calc(var(--second-base) + var(--sec));
+  --minute-angle: calc(var(--minute-base) + var(--min));
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+  flex: none;
+  /* one 6 s cycle: 3 s cruise → burst → 1.6 s cruise. Minute runs a 12 s cycle (two half-laps). */
+  animation:
+    f1-sec 6s linear infinite,
+    f1-min 12s linear infinite,
+    f1-burst 6s linear infinite;
+}
+
+/* second hand: 18° cruise + 684° burst + 18° cruise = 720° per cycle → seamless loop */
+@keyframes f1-sec {
+  0%    { --sec: 0deg;   animation-timing-function: linear; }
+  50%   { --sec: 18deg;  animation-timing-function: cubic-bezier(0.08, 0.95, 0.12, 1); }
+  73.3% { --sec: 702deg; animation-timing-function: linear; }
+  100%  { --sec: 720deg; }
+}
+/* minute hand: two 180° bursts per 12 s, tiny real drift in between */
+@keyframes f1-min {
+  0%     { --min: 0deg;     animation-timing-function: linear; }
+  25%    { --min: 0.3deg;   animation-timing-function: cubic-bezier(0.08, 0.95, 0.12, 1); }
+  36.65% { --min: 180.3deg; animation-timing-function: linear; }
+  75%    { --min: 180.6deg; animation-timing-function: cubic-bezier(0.08, 0.95, 0.12, 1); }
+  86.65% { --min: 360.6deg; animation-timing-function: linear; }
+  100%   { --min: 361deg; }
+}
+/* burst intensity: 0 while cruising, 1 at launch, bleeds off as the hands slow */
+@keyframes f1-burst {
+  0%, 49.5% { --burst: 0; }
+  52%       { --burst: 1; }
+  62%       { --burst: 0.7; }
+  74%       { --burst: 0.15; }
+  80%, 100% { --burst: 0; }
+}
+
+/* ---------- live gradient aura (replaces the straps) ---------- */
+.watch__aura {
+  position: absolute;
+  inset: -38%;
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 28% 30%, rgba(255, 201, 60, 0.26), transparent 46%),
+    radial-gradient(circle at 74% 72%, rgba(233, 238, 252, 0.16), transparent 46%);
+  filter: blur(42px) brightness(calc(1 + 0.45 * var(--burst)));
+  animation: aura 9s ease-in-out infinite alternate;
+}
+@keyframes aura {
+  from { transform: rotate(0deg) scale(1);      opacity: 0.85; }
+  to   { transform: rotate(18deg) scale(1.08);  opacity: 1; }
+}
+
+/* ---------- case ---------- */
+.watch__case {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  z-index: 1;
+  background: radial-gradient(circle at 50% 42%, #2a2b31 0%, #1e1f24 48%, #17181c 74%, #101114 92%, #0b0c0e 100%);
+  box-shadow:
+    0 40px 90px rgba(0, 0, 0, 0.8),
+    0 10px 30px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -10px 24px rgba(0, 0, 0, 0.55);
+}
+.watch__case::after {
+  content: '';
+  position: absolute;
+  inset: 5.5%;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.045),
+    inset 0 0 0 4px rgba(0, 0, 0, 0.35),
+    inset 0 4px 12px rgba(0, 0, 0, 0.7);
+}
+.watch__crown {
+  position: absolute;
+  right: -1.8%;
+  top: 46.5%;
+  width: 5%;
+  height: 7%;
+  z-index: 1;
+  border-radius: 12% / 30%;
+  background: linear-gradient(180deg, #2c2d33, #17181c 55%, #0e0f12);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ---------- face ---------- */
+.watch__face {
+  position: absolute;
+  inset: var(--face-inset);
+  border-radius: 50%;
+  z-index: 2;
+  background: #0a0b0e;
+  overflow: hidden;
+  container-type: inline-size;
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.9),
+    inset 0 0 50px rgba(0, 0, 0, 0.9),
+    inset 0 12px 30px rgba(0, 0, 0, 0.7);
+  isolation: isolate;
+}
+.watch__dots {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0.9px, transparent 1.4px) 0 0 / 6px 6px;
+  z-index: 1;
+}
+.watch__dial {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+.watch__glass {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 0%, rgba(255, 255, 255, 0.05), transparent 70%),
+    radial-gradient(circle at 50% 50%, transparent 60%, rgba(0, 0, 0, 0.55) 100%);
+  z-index: 9;
+  pointer-events: none;
+}
+
+/* ---------- embossed centre mark ---------- */
+.watch__mark {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 3;
+  pointer-events: none;
+}
+.mark {
+  grid-area: 1 / 1;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 30cqi;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #15161a;
+  translate: 0 -2cqi; /* optical centre */
+}
+.mark--shadow { color: #000; translate: 0 calc(-2cqi + 2px); filter: blur(1.5px); opacity: 0.9; }
+.mark--light  { color: rgba(255, 255, 255, 0.07); translate: 0 calc(-2cqi - 1px); }
+
+/* ---------- light-drag trails ---------- */
+.trail {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  --len: calc(20deg + 200deg * var(--burst));
+  opacity: var(--burst);
+}
+.trail--minute { --len: calc(14deg + 120deg * var(--burst)); }
+.trail__ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--d);
+  height: var(--d);
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from calc(var(--angle) - var(--len)),
+    transparent 0deg,
+    color-mix(in srgb, var(--c-deep) 50%, transparent) calc(var(--len) * 0.25),
+    var(--c-deep) calc(var(--len) * 0.55),
+    var(--c) calc(var(--len) * 0.88),
+    var(--c-hot) calc(var(--len) - 2deg),
+    #fff var(--len),
+    transparent var(--len)
+  );
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--w) - 1px), #000 calc(100% - var(--w)), #000 calc(100% - 1px), transparent 100%);
+  mask: radial-gradient(farthest-side, transparent calc(100% - var(--w) - 1px), #000 calc(100% - var(--w)), #000 calc(100% - 1px), transparent 100%);
+}
+.trail__ring--core { --w: 2.5px; }
+.trail__ring--mid  { --w: 9px;  filter: blur(3.5px); scale: 1.01; }
+.trail__ring--glow { --w: 30px; filter: blur(20px);  scale: 1.08; opacity: 0.8; }
+
+.trail__arm {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  width: 0;
+  height: calc(var(--d) / 2);
+  transform-origin: 50% 100%;
+  transform: rotate(var(--angle));
+}
+.trail__tip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 26px;
+  height: 26px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, var(--c-hot) 24%, color-mix(in srgb, var(--c) 70%, transparent) 50%, transparent 72%);
+  filter: blur(2px);
+  scale: calc(0.6 + 0.9 * var(--burst));
+}
+.trail__tip::after {
+  content: '';
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--c) 0%, transparent 65%);
+  filter: blur(10px);
+}
+
+/* ---------- three metallic hands ---------- */
+.hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform-origin: 50% 100%;
+  z-index: 6;
+  border-radius: 99px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.75), 0 0 1px rgba(255, 255, 255, 0.25);
+}
+.hand::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 10%;
+  border-radius: 99px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), transparent);
+}
+/* hour – white brushed metal */
+.hand--hour {
+  width: 6px;
+  height: 24%;
+  margin-left: -3px;
+  background: linear-gradient(90deg, #8b8f99 0%, #ffffff 38%, #d9dce3 52%, #6d717b 100%);
+  transform: rotate(var(--hour-base));
+  animation: hour-drift 43200s linear infinite;
+}
+/* minute – gold brushed metal */
+.hand--minute {
+  width: 4.5px;
+  height: 36%;
+  margin-left: -2.25px;
+  background: linear-gradient(90deg, #8a5a00 0%, #ffd96a 36%, #fff3c4 50%, #c48a12 100%);
+  transform: rotate(var(--minute-angle));
+}
+/* second – thin gold needle with counterweight */
+.hand--second {
+  width: 1.6px;
+  height: 44%;
+  margin-left: -0.8px;
+  bottom: calc(50% - 11%);
+  transform-origin: 50% calc(100% - 11%);
+  background: linear-gradient(180deg, #fff0b8 0%, #ffc93c 45%, #b8860b 80%, #7a5800 100%);
+  transform: rotate(var(--second-angle));
+}
+@keyframes hour-drift {
+  from { transform: rotate(var(--hour-base)); }
+  to   { transform: rotate(calc(var(--hour-base) + 360deg)); }
+}
+.watch__pin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3%;
+  height: 3%;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #a1a4ad, #4a4d55 70%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+  z-index: 7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .watch, .watch__aura, .hand--hour { animation: none; }
+  .watch { --sec: 0deg; --min: 0deg; --burst: 0; }
+}

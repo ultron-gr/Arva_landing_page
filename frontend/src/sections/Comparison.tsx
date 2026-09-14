@@ -21,7 +21,7 @@ export const Comparison = () => (
     </h2>
     <div className="grid lg:grid-cols-2">
       {/* Dark panel first — both in DOM order and in mobile stacking */}
-      <div className="bg-[#0a0a0a] px-4 py-20 sm:px-6 sm:py-24 lg:px-12 lg:py-28" data-testid="comparison-agencies-panel">
+      <div className="bg-[#000000] px-4 py-20 sm:px-6 sm:py-24 lg:px-12 lg:py-28" data-testid="comparison-agencies-panel">
         <div className="mx-auto max-w-xl lg:ml-auto lg:mr-0">
           <Reveal>
             <Eyebrow number="08" label="The Difference" />
@@ -44,7 +44,7 @@ export const Comparison = () => (
       </div>
 
       {/* Light panel */}
-      <div className="theme-cream bg-[#f6f1e6] px-4 py-20 text-[#0a0a0a] sm:px-6 sm:py-24 lg:px-12 lg:py-28" data-testid="comparison-arva-panel">
+      <div className="theme-cream bg-[#FFFFFF] px-4 py-20 text-[#000000] sm:px-6 sm:py-24 lg:px-12 lg:py-28" data-testid="comparison-arva-panel">
         <div className="mx-auto max-w-xl lg:ml-0">
           <Reveal>
             <p className="font-body text-xs uppercase tracking-[0.28em] text-[color:var(--arva-gold-text)]">08 / The ARVA Way</p>
