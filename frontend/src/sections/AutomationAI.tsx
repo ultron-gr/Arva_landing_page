@@ -19,6 +19,12 @@ const TIERS = [
   },
 ];
 
+const SYSTEM_LOG = [
+  { event: 'LEAD CAPTURED', time: '04:12:07', routedTo: 'WHATSAPP', status: 'MATCHED' },
+  { event: 'FORM SUBMITTED', time: '04:47:32', routedTo: 'CRM PIPELINE', status: 'SYNCED' },
+  { event: 'FOLLOW-UP SENT', time: '05:15:44', routedTo: 'EMAIL SEQUENCE', status: 'DELIVERED' },
+];
+
 /** 05 / Automation & AI — three labeled pricing tiers + retainer note. */
 export const AutomationAI = () => (
   <section id="automation-ai" aria-labelledby="automation-ai-heading" className="scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[color:var(--arva-bg)] theme-cream">
@@ -59,7 +65,35 @@ export const AutomationAI = () => (
       </div>
 
       <Reveal delay={120}>
-        <p className="mt-8 text-sm text-[color:var(--arva-text-muted)]" data-testid="automation-retainer-note">
+        <div
+          className="mt-8 rounded-none border border-[color:var(--arva-border)] bg-[color:var(--arva-surface)] px-5 py-1 sm:px-6"
+          aria-label="Example automation output log"
+          data-testid="automation-system-log"
+        >
+          <p className="border-b-[0.5px] border-[color:var(--arva-border)] py-3 font-mono text-[10px] uppercase tracking-[0.24em] text-[color:var(--arva-text-subtle)]">
+            System log — sample output
+          </p>
+          {SYSTEM_LOG.map((row, i) => (
+            <div
+              key={row.event}
+              className={`flex flex-wrap items-baseline gap-x-2 gap-y-1 py-3 font-mono text-[11px] uppercase tracking-[0.12em] text-[color:var(--arva-text-muted)] ${
+                i !== SYSTEM_LOG.length - 1 ? 'border-b-[0.5px] border-[color:var(--arva-border)]' : ''
+              }`}
+            >
+              <span className="text-[color:var(--arva-text)]">{row.event}</span>
+              <span aria-hidden="true" className="text-[color:var(--arva-text-subtle)]">·</span>
+              <span>{row.time}</span>
+              <span aria-hidden="true" className="text-[color:var(--arva-text-subtle)]">·</span>
+              <span>Routed to: {row.routedTo}</span>
+              <span aria-hidden="true" className="text-[color:var(--arva-text-subtle)]">·</span>
+              <span className="text-[color:var(--arva-gold)]">Status: {row.status}</span>
+            </div>
+          ))}
+        </div>
+      </Reveal>
+
+      <Reveal delay={160}>
+        <p className="mt-6 text-sm text-[color:var(--arva-text-muted)]" data-testid="automation-retainer-note">
           Keep it running: retainer plans from <span className="font-medium text-[color:var(--arva-gold)]">₹5,000/month</span> for
           monitoring, fixes and continuous improvement.
         </p>
