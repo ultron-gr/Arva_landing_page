@@ -9,6 +9,11 @@ const SERVICES = [
   { name: 'Personal Brand Content', desc: 'Founder-led content that builds trust at scale.' },
 ];
 
+const PROOF_STATS = [
+  { number: '01', label: 'Long-Form Output', value: '2×', caption: 'Long-form per month' },
+  { number: '02', label: 'Short-Form Output', value: '4×', caption: 'Short-form per month' },
+];
+
 /** 03 / Content & Video — service list + side stat callout (below list on mobile). */
 export const ContentVideo = () => (
   <section id="content-video" aria-labelledby="content-video-heading" className="relative scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[color:var(--arva-surface)] theme-cream">
@@ -43,23 +48,43 @@ export const ContentVideo = () => (
         </ul>
 
         <Reveal delay={160} className="lg:self-center">
-          <aside
-            aria-label="Content production stat"
-            data-testid="content-video-stat-callout"
-            className="rounded-none border border-[color:var(--arva-border)] bg-[color:var(--arva-surface-2)] p-8"
-          >
-            <p className="font-display text-3xl uppercase leading-tight text-[color:var(--arva-text)]">
-              One shoot day.
-              <br />
-              Six formats.
-              <br />
-              <span className="text-[color:var(--arva-gold)]">Infinite reach.</span>
-            </p>
-            <p className="mt-5 text-sm leading-relaxed text-[color:var(--arva-text-muted)]">
-              Every shoot is planned as a system — one day of production becomes a month of
-              long-form, shorts, stills and campaign assets.
-            </p>
-          </aside>
+          <div className="flex flex-col gap-4">
+            <aside
+              aria-label="Content production stat"
+              data-testid="content-video-stat-callout"
+              className="rounded-none border border-[color:var(--arva-border)] bg-[color:var(--arva-surface-2)] p-8"
+            >
+              <p className="font-display text-3xl uppercase leading-tight text-[color:var(--arva-text)]">
+                One shoot day.
+                <br />
+                Six formats.
+                <br />
+                <span className="text-[color:var(--arva-gold)]">Infinite reach.</span>
+              </p>
+              <p className="mt-5 text-sm leading-relaxed text-[color:var(--arva-text-muted)]">
+                Every shoot is planned as a system — one day of production becomes a month of
+                long-form, shorts, stills and campaign assets.
+              </p>
+            </aside>
+
+            <div className="grid grid-cols-2 gap-4" data-testid="content-video-proof-stats">
+              {PROOF_STATS.map((s) => (
+                <div
+                  key={s.number}
+                  className="rounded-none border border-[color:var(--arva-border)] bg-[color:var(--arva-surface-2)] p-5"
+                  data-testid={`content-video-proof-stat-${s.number}`}
+                >
+                  <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-[color:var(--arva-text-subtle)]">
+                    <span className="text-[color:var(--arva-gold)]">{s.number}</span> / {s.label}
+                  </p>
+                  <p className="mt-3 font-display text-4xl uppercase leading-none text-[color:var(--arva-text)]">{s.value}</p>
+                  <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--arva-text-subtle)]">
+                    {s.caption}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </Reveal>
       </div>
     </div>

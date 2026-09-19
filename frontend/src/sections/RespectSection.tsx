@@ -4,7 +4,7 @@ import './RespectSection.css';
 
 export function RespectSection() {
   return (
-    <section className="respect" id="respect" aria-labelledby="respect-title">
+    <section className="respect scroll-mt-24" id="respect" aria-labelledby="respect-title">
       <Reveal delay={100} className="respect__visual">
         <Watch mark="A" />
       </Reveal>
