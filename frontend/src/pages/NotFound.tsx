@@ -1,7 +1,14 @@
 import { Link } from 'react-router-dom';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 /** Branded 404 — spec: never ship the framework default. */
 export default function NotFound() {
+  usePageMeta({
+    title: 'Page not found — ARVA Studios',
+    description: "This page doesn't exist. Head back to the ARVA Studios homepage.",
+    noindex: true,
+  });
+
   return (
     <main id="main" className="flex min-h-screen flex-col items-center justify-center bg-[#0a0a0a] px-6 text-center noise relative">
       <p className="text-xs uppercase tracking-[0.3em] text-[color:var(--arva-gold)]">ARVA Studios</p>
