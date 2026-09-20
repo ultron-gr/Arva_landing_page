@@ -138,7 +138,7 @@ export const ProgressGauge = ({ progress, size = 128, className = '' }: Progress
           cy={CENTER}
           r={RADIUS}
           fill="none"
-          stroke="#C9A84C"
+          stroke="#B4BAC2"
           strokeWidth="3"
           strokeLinecap="round"
           strokeDasharray={`${dash} ${CIRCUMFERENCE - dash}`}
@@ -154,7 +154,7 @@ export const ProgressGauge = ({ progress, size = 128, className = '' }: Progress
           strokeLinecap="round"
           transform={`rotate(${needleDeg} ${CENTER} ${CENTER})`}
         />
-        <circle cx={CENTER} cy={CENTER} r="5" fill="#C9A84C" />
+        <circle cx={CENTER} cy={CENTER} r="5" fill="#B4BAC2" />
       </svg>
       <span
         className="absolute inset-x-0 bottom-[20%] text-center font-mono text-xs text-[color:var(--arva-gold-text)]"

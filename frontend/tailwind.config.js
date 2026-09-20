@@ -23,7 +23,12 @@ module.exports = {
           lightgray: '#D4D4D4',
           offwhite: '#F5F5F0',
           purewhite: '#FFFFFF',
-          gold: '#C9A84C',
+        },
+        silver: {
+          DEFAULT: '#B4BAC2',
+          bright: '#E6EAEF',
+          deep: '#7D848D',
+          ink: '#5A6068',
         },
       },
       fontFamily: {

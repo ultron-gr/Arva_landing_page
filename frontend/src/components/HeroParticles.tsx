@@ -133,7 +133,7 @@ class VortexScene {
     const goldCount = Math.round(total * GOLD_RATIO);
     const whiteCount = total - goldCount;
     this.white = createGroup(whiteCount, '#FFFFFF', 0.11, 0.85, this.glow);
-    this.gold = createGroup(goldCount, '#C9A84C', 0.16, 1, this.glow);
+    this.gold = createGroup(goldCount, '#B4BAC2', 0.16, 1, this.glow);
     this.scene.add(this.white.points, this.gold.points);
   }
 
@@ -259,7 +259,7 @@ export const HeroParticles = () => {
         className="pointer-events-none absolute inset-0 z-0"
         style={{
           background:
-            'radial-gradient(60% 60% at 68% 50%, rgba(201,168,76,0.16) 0%, rgba(201,168,76,0.05) 35%, transparent 65%), radial-gradient(50% 50% at 68% 50%, rgba(255,255,255,0.06) 0%, transparent 60%)',
+            'radial-gradient(60% 60% at 68% 50%, rgba(180,186,194,0.16) 0%, rgba(180,186,194,0.05) 35%, transparent 65%), radial-gradient(50% 50% at 68% 50%, rgba(255,255,255,0.06) 0%, transparent 60%)',
         }}
       />
     );

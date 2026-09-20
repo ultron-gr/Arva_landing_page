@@ -17,8 +17,19 @@
   --arva-text: #FFFFFF;
   --arva-text-muted: #888888;
   --arva-text-subtle: #888888;
-  --arva-gold: #C9A84C;
-  --arva-gold-text: #C9A84C;
+
+  /* Silver accent system — flat, cool grey. --arva-silver-* are the raw
+     ramp; --arva-gold / --arva-gold-text are the pre-existing accent
+     tokens every component actually consumes, repointed here per theme
+     so no call site needs to change. */
+  --arva-silver: #B4BAC2;
+  --arva-silver-bright: #E6EAEF;
+  --arva-silver-deep: #7D848D;
+  --arva-silver-ink: #5A6068;
+  --arva-silver-line: rgba(180, 186, 194, 0.28);
+  --arva-silver-line-light: rgba(110, 116, 124, 0.45);
+  --arva-gold: var(--arva-silver);
+  --arva-gold-text: var(--arva-silver);
 
   /* Referenced by legacy section CSS (e.g. RespectSection.css) that predates
      the Tailwind font-display/font-body/font-mono tokens in tailwind.config.js.
@@ -45,8 +56,8 @@
   --arva-text: #000000;
   --arva-text-muted: #3A3A3A;
   --arva-text-subtle: #888888;
-  --arva-gold: #C9A84C;
-  --arva-gold-text: #C9A84C;
+  --arva-gold: var(--arva-silver-ink);
+  --arva-gold-text: var(--arva-silver-ink);
 }
 
 html {
@@ -60,7 +71,7 @@ body {
 }
 
 ::selection {
-  background: #C9A84C;
+  background: #B4BAC2;
   color: #000000;
 }
 
@@ -81,7 +92,7 @@ body {
 .skip-link:focus-visible {
   top: 16px;
   outline: none;
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.6);
+  box-shadow: 0 0 0 3px rgba(180, 186, 194, 0.6);
 }
 
 /* --------------------------------------------------------- focus states */
@@ -133,7 +144,7 @@ body {
 
 /* Decorative outlined numerals */
 .big-numeral {
-  -webkit-text-stroke: 1px rgba(212, 175, 55, 0.28);
+  -webkit-text-stroke: 1px rgba(180, 186, 194, 0.28);
   color: transparent;
   user-select: none;
 }

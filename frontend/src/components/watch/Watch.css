@@ -19,7 +19,7 @@
   height: 100%;
 }
 
-/* matte leather-look straps, dark, with a faint lit edge on the gold side */
+/* matte leather-look straps, dark, with a faint lit silver edge */
 .strap {
   position: absolute; left: 50%; top: 50%;
   width: 240%; height: 22%;
@@ -27,7 +27,7 @@
   transform-origin: 0 50%;
   border-radius: 0 12px 12px 0;
   z-index: 0;
-  --c: #ffc93c; --c-deep: #ff9a00;
+  --c: #E6EAEF; --c-deep: #B4BAC2;
   background:
     linear-gradient(180deg, rgba(255,255,255,.05), transparent 30%, transparent 70%, rgba(0,0,0,.55)),
     linear-gradient(90deg, #17181c 0%, #111216 45%, #0b0c0e 100%);
@@ -65,7 +65,7 @@
   z-index: 0; 
   pointer-events: none;
   background:
-    radial-gradient(circle at 30% 30%, rgba(255,201,60,.22), transparent 45%),
+    radial-gradient(circle at 30% 30%, rgba(180,186,194,.22), transparent 45%),
     radial-gradient(circle at 72% 72%, rgba(233,238,252,.14), transparent 45%);
   filter: blur(40px) brightness(calc(1 + .35 * var(--burst)));
   animation: aura 9s ease-in-out infinite alternate;
@@ -272,7 +272,7 @@
   width: 4.5px;
   height: 36%;
   margin-left: -2.25px;
-  background: linear-gradient(90deg, #8a5a00 0%, #ffd96a 36%, #fff3c4 50%, #c48a12 100%);
+  background: linear-gradient(90deg, #6d717b 0%, #E6EAEF 36%, #FFFFFF 50%, #7D848D 100%);
   transform: rotate(var(--minute-angle));
 }
 .hand--second {
@@ -281,13 +281,13 @@
   margin-left: -.8px;
   bottom: calc(50% - 11%);
   transform-origin: 50% 75%;
-  background: linear-gradient(180deg, #fff0b8 0%, #ffc93c 45%, #b8860b 80%, #7a5800 100%);
+  background: linear-gradient(180deg, #FFFFFF 0%, #B4BAC2 45%, #7D848D 80%, #5A6068 100%);
   transform: rotate(var(--second-angle));
 }
 .hand--second::before {
   content: ''; position: absolute; left: 50%; bottom: 0; width: 5px; height: 25%;
   translate: -50% 0; border-radius: 99px;
-  background: linear-gradient(180deg, #b8860b, #7a5800);
+  background: linear-gradient(180deg, #7D848D, #5A6068);
 }
 
 .watch__pin {
