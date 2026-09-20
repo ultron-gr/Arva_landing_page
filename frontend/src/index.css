@@ -102,27 +102,86 @@ body {
 }
 
 /* ---------------------------------------------------------- glass nav */
-/* Editorial glass: real blur + translucency, sharp corners, a hairline
-   border instead of a shadow. Solid fallback first so a browser without
-   backdrop-filter support never renders text on a transparent panel. */
+/* Adaptive transparent bar — no fixed panel. It inverts with whatever
+   section is behind it: dark section -> white ink, thin dark veil; light
+   section -> black ink, thin light veil. Header.tsx writes data-tone /
+   data-scrolled straight to the DOM (refs, not React state) so these
+   attribute selectors are the only thing that repaints on scroll — only
+   background-color/color/opacity ever transition, never blur/height/
+   top/width. */
 .glass-nav {
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(10, 10, 10, 0.94);
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
   transition:
-    background-color 220ms var(--ease-out),
-    border-color 220ms var(--ease-out);
+    background-color 120ms linear,
+    color 120ms linear;
+  will-change: background-color;
 }
-.glass-nav--scrolled {
-  border-color: rgba(255, 255, 255, 0.2);
+.glass-nav[data-tone='dark'] {
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.28);
+  --arva-gold: #b4bac2;
+  --arva-gold-text: #b4bac2;
+  --nav-ring-offset: #000000;
+}
+.glass-nav[data-tone='light'] {
+  color: #000000;
+  background-color: rgba(245, 245, 240, 0.55);
+  --arva-gold: #6e747c;
+  --arva-gold-text: #6e747c;
+  --nav-ring-offset: #f5f5f0;
 }
 @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-  .glass-nav {
-    background: rgba(10, 10, 10, 0.38);
-    backdrop-filter: blur(28px) saturate(180%);
-    -webkit-backdrop-filter: blur(28px) saturate(180%);
+  .glass-nav[data-tone] {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
-  .glass-nav--scrolled {
-    background: rgba(10, 10, 10, 0.62);
+}
+/* No blur support: raise the veil instead of leaving text on a panel
+   with nothing softening what's behind it. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-nav[data-tone='dark'] {
+    background-color: rgba(0, 0, 0, 0.82);
+  }
+  .glass-nav[data-tone='light'] {
+    background-color: rgba(245, 245, 240, 0.92);
+  }
+}
+/* Mobile: blur is the expensive part, not the tint — drop it and raise
+   the veil instead. */
+@media (max-width: 767px) {
+  .glass-nav[data-tone] {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .glass-nav[data-tone='dark'] {
+    background-color: rgba(0, 0, 0, 0.72);
+  }
+  .glass-nav[data-tone='light'] {
+    background-color: rgba(245, 245, 240, 0.72);
+  }
+}
+/* At the very top of the page — fully transparent, nothing behind the
+   logo. Placed last so it wins the cascade over the tone/media rules
+   above without needing !important. */
+.glass-nav[data-scrolled='false'] {
+  background-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Nav CTA border — currentColor so it flips with the nav's tone instead
+   of a hardcoded white; softened to 35% where the browser supports CSS
+   relative-color syntax, solid currentColor otherwise (never invisible,
+   never locked to one tone). */
+.nav-btn-border {
+  border-color: currentColor;
+}
+@supports (color: rgb(from red r g b)) {
+  .nav-btn-border {
+    border-color: rgb(from currentColor r g b / 35%);
   }
 }
 

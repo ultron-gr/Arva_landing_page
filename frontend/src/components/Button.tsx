@@ -21,12 +21,14 @@ const VARIANT_CLASSES: Record<Variant, string> = {
     'transition-colors duration-200 hover:border-[color:var(--arva-gold-muted)] active:bg-white/5 ' +
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--arva-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--arva-bg)] ' +
     'disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:border-[color:var(--arva-border-strong)]',
-  // "Book a Call →" in the nav — 1px white border, transparent, hover fills white/black
+  // "Book a Call →" in the adaptive nav — 1px currentColor border (so it
+  // flips with the nav's tone instead of staying hardcoded white),
+  // transparent, hover fills white/black
   nav:
-    'inline-flex items-center justify-center gap-2 rounded-none border border-white bg-transparent text-white px-5 py-2.5 min-h-[44px] text-sm font-medium ' +
+    'nav-btn-border inline-flex items-center justify-center gap-2 rounded-none border bg-transparent text-inherit px-5 py-2.5 min-h-[44px] text-sm font-medium ' +
     'transition-colors duration-200 hover:bg-white hover:text-black active:scale-[0.99] ' +
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--arva-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-black ' +
-    'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-white',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--arva-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--nav-ring-offset)] ' +
+    'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent',
 };
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

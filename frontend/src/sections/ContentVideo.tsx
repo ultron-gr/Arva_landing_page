@@ -16,7 +16,12 @@ const PROOF_STATS = [
 
 /** 03 / Content & Video — service list + side stat callout (below list on mobile). */
 export const ContentVideo = () => (
-  <section id="content-video" aria-labelledby="content-video-heading" className="relative scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[color:var(--arva-surface)] theme-cream">
+  <section
+    id="content-video"
+    data-nav="light"
+    aria-labelledby="content-video-heading"
+    className="relative scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[color:var(--arva-surface)] theme-cream"
+  >
     <div className="mx-auto w-full max-w-site px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
       <Reveal>
         <Eyebrow number="03" label="Content & Video" />

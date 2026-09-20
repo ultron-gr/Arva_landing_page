@@ -14,7 +14,12 @@ const BUILT_WITH = ['Next.js', 'Framer', 'Supabase', 'Neon', 'Clerk', 'Vercel', 
 
 /** 04 / Web Products — real <table> with scoped row headers from md up, stacked cards below. */
 export const WebProducts = () => (
-  <section id="web-products" aria-labelledby="web-products-heading" className="scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[#111111]">
+  <section
+    id="web-products"
+    data-nav="dark"
+    aria-labelledby="web-products-heading"
+    className="scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[#111111]"
+  >
     <div className="mx-auto w-full max-w-site px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
       <Reveal>
         <Eyebrow number="04" label="Web Products" />

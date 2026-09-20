@@ -12,7 +12,12 @@ const ITEMS = [
 
 /** 06 / Brand Design — 6-item grid: 1 col @360, 2 @sm, 3 @lg. */
 export const BrandDesign = () => (
-  <section id="brand-design" aria-labelledby="brand-design-heading" className="scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[#000000]">
+  <section
+    id="brand-design"
+    data-nav="dark"
+    aria-labelledby="brand-design-heading"
+    className="scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[#000000]"
+  >
     <div className="mx-auto w-full max-w-site px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
       <Reveal>
         <Eyebrow number="06" label="Brand Design" />

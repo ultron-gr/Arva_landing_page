@@ -18,7 +18,12 @@ const SECONDARY_CTA_CLASS =
  * pinned to the corner, and a services ticker closing out the section.
  */
 export const Hero = () => (
-  <section id="hero" aria-labelledby="hero-heading" className="relative flex min-h-screen w-full flex-col overflow-hidden bg-black">
+  <section
+    id="hero"
+    data-nav="dark"
+    aria-labelledby="hero-heading"
+    className="relative flex min-h-screen w-full flex-col overflow-hidden bg-black"
+  >
     <HeroParticles />
     <div
       aria-hidden="true"

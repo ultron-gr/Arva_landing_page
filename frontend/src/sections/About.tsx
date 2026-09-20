@@ -9,7 +9,12 @@ const STATS = [
 
 /** About / manifesto — light cream section. */
 export const About = () => (
-  <section id="about" aria-labelledby="about-heading" className="theme-cream scroll-mt-24 bg-[#f6f1e6] text-[#0a0a0a]">
+  <section
+    id="about"
+    data-nav="light"
+    aria-labelledby="about-heading"
+    className="theme-cream scroll-mt-24 bg-[#f6f1e6] text-[#0a0a0a]"
+  >
     <div className="mx-auto w-full max-w-site px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
       <Reveal>
         <Eyebrow number="01" label="The Studio" />

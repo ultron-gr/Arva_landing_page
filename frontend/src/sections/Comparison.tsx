@@ -15,7 +15,12 @@ const ARVA_POINTS = [
 
 /** 08 / Comparison — true side-by-side split from lg; stacks dark-first below. */
 export const Comparison = () => (
-  <section id="comparison" aria-labelledby="comparison-heading" className="scroll-mt-24 border-t border-[color:var(--arva-border)]">
+  <section
+    id="comparison"
+    data-nav="dark"
+    aria-labelledby="comparison-heading"
+    className="scroll-mt-24 border-t border-[color:var(--arva-border)]"
+  >
     <h2 id="comparison-heading" className="sr-only">
       What most agencies do versus what ARVA does
     </h2>

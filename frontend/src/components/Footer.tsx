@@ -29,7 +29,7 @@ const WEBSITE_LABEL = 'arvastudios.in';
  * Socials live only in column 1 — not duplicated in Connect.
  */
 export const Footer = () => (
-  <footer data-testid="site-footer" className="border-t border-[color:var(--arva-border)] bg-[#0A0A0A]">
+  <footer data-testid="site-footer" data-nav="dark" className="border-t border-[color:var(--arva-border)] bg-[#0A0A0A]">
     <div className="mx-auto w-full max-w-site px-4 py-16 sm:px-6 lg:px-8">
       <div className="grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
         <Reveal className="sm:col-span-2 lg:col-span-1">

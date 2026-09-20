@@ -8,19 +8,26 @@
 export const ArvaWordmark = ({
   className = '',
   fontSize = 'clamp(2.6rem, 12vw, 4.75rem)',
+  inheritColor = false,
 }: {
   className?: string;
   /** CSS font-size for the "ARVA" row — defaults to the intro loader's responsive clamp. */
   fontSize?: string;
+  /** Inherit `color` from an ancestor instead of the fixed intro-loader white — for contexts (like the adaptive nav) that flip ink color themselves. */
+  inheritColor?: boolean;
 }) => (
   <div className={`flex select-none flex-col items-center ${className}`} style={{ fontSize }}>
-    <div className="flex items-baseline leading-none font-display font-extrabold uppercase tracking-[-0.01em] text-white text-[1em]">
+    <div
+      className={`flex items-baseline leading-none font-display font-extrabold uppercase tracking-[-0.01em] text-[1em] ${inheritColor ? 'text-inherit' : 'text-white'}`}
+    >
       <span>A</span>
       <span>R</span>
       <span>V</span>
       <span>A</span>
     </div>
-    <span className="mt-[0.08em] font-mono text-[0.19em] font-normal uppercase tracking-[0.55em] text-white/70">
+    <span
+      className={`mt-[0.08em] font-mono text-[0.19em] font-normal uppercase tracking-[0.55em] opacity-70 ${inheritColor ? 'text-inherit' : 'text-white'}`}
+    >
       Studios
     </span>
   </div>

@@ -47,7 +47,12 @@ const PILLARS: PillarDef[] = [
 
 /** Four Pillars — 1 col @360, 2 col @sm/md, 4 col @lg+. */
 export const Pillars = () => (
-  <section id="pillars" aria-labelledby="pillars-heading" className="relative scroll-mt-24 bg-[#0a0a0a]">
+  <section
+    id="pillars"
+    data-nav="dark"
+    aria-labelledby="pillars-heading"
+    className="relative scroll-mt-24 bg-[#0a0a0a]"
+  >
     <div className="mx-auto w-full max-w-site px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
       <Reveal>
         <Eyebrow number="02" label="What We Do" />

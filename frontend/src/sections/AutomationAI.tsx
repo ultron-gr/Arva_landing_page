@@ -27,7 +27,12 @@ const SYSTEM_LOG = [
 
 /** 05 / Automation & AI — three labeled pricing tiers + retainer note. */
 export const AutomationAI = () => (
-  <section id="automation-ai" aria-labelledby="automation-ai-heading" className="scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[color:var(--arva-bg)] theme-cream">
+  <section
+    id="automation-ai"
+    data-nav="light"
+    aria-labelledby="automation-ai-heading"
+    className="scroll-mt-24 border-t border-[color:var(--arva-border)] bg-[color:var(--arva-bg)] theme-cream"
+  >
     <div className="mx-auto w-full max-w-site px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
       <Reveal>
         <Eyebrow number="05" label="Automation & AI" />
