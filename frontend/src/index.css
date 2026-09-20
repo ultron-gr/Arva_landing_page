@@ -101,6 +101,36 @@ body {
   outline-offset: 2px;
 }
 
+/* ---------------------------------------------------------- glass nav */
+/* Editorial glass: real blur + translucency, sharp corners, a hairline
+   border instead of a shadow. Solid fallback first so a browser without
+   backdrop-filter support never renders text on a transparent panel. */
+.glass-nav {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(10, 10, 10, 0.94);
+  transition:
+    background-color 220ms var(--ease-out),
+    border-color 220ms var(--ease-out);
+}
+.glass-nav--scrolled {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .glass-nav {
+    background: rgba(10, 10, 10, 0.55);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+  .glass-nav--scrolled {
+    background: rgba(10, 10, 10, 0.72);
+  }
+}
+
+/* In-page anchor jumps should never land under the floating nav. */
+section[id] {
+  scroll-margin-top: 96px;
+}
+
 /* --------------------------------------------------------------- reveal */
 .reveal {
   opacity: 0;
