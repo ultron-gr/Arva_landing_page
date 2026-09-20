@@ -7,17 +7,17 @@ import { useReducedMotion } from '../hooks/useReducedMotion';
  * oblique view and spinning slowly around its own axis, silver points
  * catching light from dim (left) to bright (right). Static per-particle
  * layout (built once) with the spin applied as a single transform on the
- * points object each frame, rather than rewriting every vertex position —
- * cheaper than the previous flowing-vortex version, not more expensive.
- * Raw Three.js (no @react-three/fiber — three is already a dependency via
- * TrafficWave; this mirrors that component's vanilla-class +
- * ResizeObserver pattern rather than adding a new library).
+ * points object each frame, rather than rewriting every vertex position.
+ * A small custom shader (not @react-three/fiber — three is already a
+ * dependency via TrafficWave) drives per-particle size and a soft, lit-
+ * sphere falloff instead of a flat PointsMaterial dot. The whole disc
+ * parallax-tilts toward the cursor for a lightweight interactive feel.
  *
  * Background only: no text/logo/icons are drawn into the canvas.
  */
 
-const DESKTOP_TOTAL = 1200; // within the 800–1500 spec range
-const MOBILE_TOTAL = 400; // within the 300–500 spec range, hard cap (not CSS-hidden)
+const DESKTOP_TOTAL = 2400;
+const MOBILE_TOTAL = 900;
 const MOBILE_BREAKPOINT = 768;
 
 const MIN_RADIUS = 2.6;
@@ -33,34 +33,51 @@ const TILT_X = -1.3;
 const ROTATE_SPEED = 0.045; // rad/sec — gentle self-rotation, never pauses
 const RING_X_OFFSET = 2.6; // biases the ring right of center, clear of left-aligned text
 
+const POINTER_DAMPING = 0.06; // per-frame lerp toward the cursor target
+const POINTER_TILT = 0.16; // rad of extra tilt at the pointer's furthest reach
+const POINTER_YAW = 0.22; // rad of extra yaw at the pointer's furthest reach
+
 const EDGE = new THREE.Color('#7D848D'); // arva-silver-deep — dim side
 const CORE = new THREE.Color('#E6EAEF'); // arva-silver-bright — lit side
 
-function createGlowSprite(): THREE.Texture {
-  const size = 64;
-  const canvas = document.createElement('canvas');
-  canvas.width = size;
-  canvas.height = size;
-  const ctx = canvas.getContext('2d')!;
-  const gradient = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
-  gradient.addColorStop(0, 'rgba(255,255,255,1)');
-  gradient.addColorStop(0.4, 'rgba(255,255,255,0.55)');
-  gradient.addColorStop(1, 'rgba(255,255,255,0)');
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, size, size);
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.needsUpdate = true;
-  return texture;
-}
+const VERTEX_SHADER = /* glsl */ `
+  attribute float aScale;
+  attribute vec3 aColor;
+  varying vec3 vColor;
+  uniform float uSize;
+  uniform float uPixelRatio;
+  void main() {
+    vColor = aColor;
+    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+    gl_PointSize = uSize * aScale * uPixelRatio * (14.0 / -mvPosition.z);
+    gl_Position = projectionMatrix * mvPosition;
+  }
+`;
+
+const FRAGMENT_SHADER = /* glsl */ `
+  varying vec3 vColor;
+  uniform float uOpacity;
+  void main() {
+    vec2 c = gl_PointCoord - vec2(0.5);
+    float d = length(c);
+    if (d > 0.5) discard;
+    float alpha = smoothstep(0.5, 0.05, d);
+    // A brighter core reads as a small lit sphere rather than a flat dot.
+    float core = smoothstep(0.32, 0.0, d) * 0.6;
+    vec3 shaded = mix(vColor, vec3(1.0), core);
+    gl_FragColor = vec4(shaded, alpha * uOpacity);
+  }
+`;
 
 function buildRingGeometry(total: number): THREE.BufferGeometry {
   const hazeCount = Math.round(total * HAZE_FRACTION);
   const bandCount = total - hazeCount;
   const positions = new Float32Array(total * 3);
   const colors = new Float32Array(total * 3);
+  const scales = new Float32Array(total);
   const c = new THREE.Color();
 
-  const write = (i: number, radius: number, depthJitter: number, dim: number) => {
+  const write = (i: number, radius: number, depthJitter: number, dim: number, scaleMin: number, scaleMax: number) => {
     // Disc built face-on in the local XY plane — the group-level TILT_X
     // rotation is what turns this into an oblique ellipse.
     const angle = Math.random() * Math.PI * 2;
@@ -79,20 +96,23 @@ function buildRingGeometry(total: number): THREE.BufferGeometry {
     colors[i * 3] = c.r;
     colors[i * 3 + 1] = c.g;
     colors[i * 3 + 2] = c.b;
+
+    scales[i] = scaleMin + Math.random() * (scaleMax - scaleMin);
   };
 
   for (let i = 0; i < bandCount; i++) {
     const radius = MIN_RADIUS + Math.random() * (MAX_RADIUS - MIN_RADIUS);
-    write(i, radius, RING_DEPTH_JITTER, 0);
+    write(i, radius, RING_DEPTH_JITTER, 0, 0.6, 1.7);
   }
   for (let i = bandCount; i < total; i++) {
     const radius = MIN_RADIUS * 0.5 + Math.random() * (HAZE_MAX_RADIUS - MIN_RADIUS * 0.5);
-    write(i, radius, HAZE_DEPTH_JITTER, 0.45);
+    write(i, radius, HAZE_DEPTH_JITTER, 0.45, 0.35, 0.9);
   }
 
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  geometry.setAttribute('aColor', new THREE.BufferAttribute(colors, 3));
+  geometry.setAttribute('aScale', new THREE.BufferAttribute(scales, 1));
   return geometry;
 }
 
@@ -100,11 +120,10 @@ class RingScene {
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
-  private glow: THREE.Texture;
   private tilt: THREE.Group;
   private points: THREE.Points;
   private geometry: THREE.BufferGeometry;
-  private material: THREE.PointsMaterial;
+  private material: THREE.ShaderMaterial;
   private frameId = 0;
   private disposed = false;
   private paused = false;
@@ -112,10 +131,15 @@ class RingScene {
   private lastElapsedMs = 0;
   private width = 1;
   private height = 1;
+  private pointerTargetX = 0;
+  private pointerTargetY = 0;
+  private pointerX = 0;
+  private pointerY = 0;
 
-  constructor(canvas: HTMLCanvasElement, total: number, maxPixelRatio: number) {
+  constructor(canvas: HTMLCanvasElement, total: number, maxPixelRatio: number, isMobile: boolean) {
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxPixelRatio));
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
+    this.renderer.setPixelRatio(pixelRatio);
     this.renderer.setClearColor(0x000000, 1);
 
     this.scene = new THREE.Scene();
@@ -123,16 +147,17 @@ class RingScene {
     this.camera.position.set(0, 0, 12);
     this.camera.lookAt(0, 0, 0);
 
-    this.glow = createGlowSprite();
     this.geometry = buildRingGeometry(total);
-    this.material = new THREE.PointsMaterial({
-      size: 0.12,
-      map: this.glow,
-      vertexColors: true,
+    this.material = new THREE.ShaderMaterial({
+      vertexShader: VERTEX_SHADER,
+      fragmentShader: FRAGMENT_SHADER,
+      uniforms: {
+        uSize: { value: isMobile ? 8.0 : 10.5 },
+        uPixelRatio: { value: pixelRatio },
+        uOpacity: { value: 0 },
+      },
       transparent: true,
-      opacity: 0.85,
       depthWrite: false,
-      sizeAttenuation: true,
       blending: THREE.NormalBlending,
     });
     this.points = new THREE.Points(this.geometry, this.material);
@@ -152,6 +177,12 @@ class RingScene {
     this.renderer.setSize(this.width, this.height, false);
     this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();
+  }
+
+  /** nx/ny in [-1, 1], normalized pointer position across the viewport. */
+  setPointer(nx: number, ny: number): void {
+    this.pointerTargetX = nx;
+    this.pointerTargetY = ny;
   }
 
   pause(): void {
@@ -174,6 +205,15 @@ class RingScene {
     if (this.disposed || this.paused) return;
     const elapsed = (performance.now() - this.startTime) / 1000;
     this.lastElapsedMs = performance.now() - this.startTime;
+
+    const opacity = this.material.uniforms.uOpacity;
+    if (opacity.value < 0.92) opacity.value = Math.min(0.92, opacity.value + 0.016);
+
+    this.pointerX += (this.pointerTargetX - this.pointerX) * POINTER_DAMPING;
+    this.pointerY += (this.pointerTargetY - this.pointerY) * POINTER_DAMPING;
+    this.tilt.rotation.x = TILT_X + this.pointerY * POINTER_TILT;
+    this.tilt.rotation.y = this.pointerX * POINTER_YAW;
+
     this.points.rotation.z = elapsed * ROTATE_SPEED;
     this.renderer.render(this.scene, this.camera);
     this.frameId = requestAnimationFrame(this.tick);
@@ -184,7 +224,6 @@ class RingScene {
     cancelAnimationFrame(this.frameId);
     this.geometry.dispose();
     this.material.dispose();
-    this.glow.dispose();
     this.renderer.dispose();
   }
 }
@@ -208,7 +247,7 @@ export const HeroParticles = () => {
     const init = () => {
       let scene: RingScene;
       try {
-        scene = new RingScene(canvas, isMobile ? MOBILE_TOTAL : DESKTOP_TOTAL, isMobile ? 1.5 : 2);
+        scene = new RingScene(canvas, isMobile ? MOBILE_TOTAL : DESKTOP_TOTAL, isMobile ? 1.5 : 2, isMobile);
       } catch {
         return;
       }
@@ -230,9 +269,19 @@ export const HeroParticles = () => {
       );
       io.observe(container);
 
+      // Global listener (not on the canvas — it stays pointer-events:none
+      // so it never blocks scroll) driving a subtle parallax tilt.
+      const onPointerMove = (e: PointerEvent) => {
+        const nx = (e.clientX / window.innerWidth) * 2 - 1;
+        const ny = (e.clientY / window.innerHeight) * 2 - 1;
+        scene.setPointer(nx, ny);
+      };
+      window.addEventListener('pointermove', onPointerMove, { passive: true });
+
       cleanupInner = () => {
         ro.disconnect();
         io.disconnect();
+        window.removeEventListener('pointermove', onPointerMove);
         scene.dispose();
         sceneRef.current = null;
       };

@@ -106,23 +106,23 @@ body {
    border instead of a shadow. Solid fallback first so a browser without
    backdrop-filter support never renders text on a transparent panel. */
 .glass-nav {
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(10, 10, 10, 0.94);
   transition:
     background-color 220ms var(--ease-out),
     border-color 220ms var(--ease-out);
 }
 .glass-nav--scrolled {
-  border-color: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
   .glass-nav {
-    background: rgba(10, 10, 10, 0.55);
-    backdrop-filter: blur(18px) saturate(140%);
-    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    background: rgba(10, 10, 10, 0.38);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
   }
   .glass-nav--scrolled {
-    background: rgba(10, 10, 10, 0.72);
+    background: rgba(10, 10, 10, 0.62);
   }
 }
 
