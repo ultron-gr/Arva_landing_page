@@ -4,11 +4,16 @@ import { useReducedMotion } from '../../hooks/useReducedMotion';
 // Rotation applied to the "A" glyph below — 180 reads as an inverted A (∀).
 // Set to 0 for an upright A.
 const CURSOR_ROTATION = 180;
-const CURSOR_SIZE = 22; // px, square bounding box for the cursor svg
+const CURSOR_SIZE = 32; // px, square bounding box for the cursor svg
+const CURSOR_VIEWBOX = 24; // the svg paths below are authored on a 24x24 grid
+const CURSOR_SCALE = CURSOR_SIZE / CURSOR_VIEWBOX;
+// How quickly the rendered position eases toward the real pointer position
+// each frame — 1 would be an exact 1:1 follow, lower is smoother/laggier.
+const POSITION_SMOOTHING = 0.35;
 
 // Apex tip position *before* rotation, inside the CURSOR_SIZE box — scaled
-// down from the 24x24 viewBox below (22/24 = 0.9167).
-const APEX = { x: 11, y: 0.92 };
+// from the 24x24 viewBox the paths below are authored on.
+const APEX = { x: 12 * CURSOR_SCALE, y: 1 * CURSOR_SCALE };
 // After CURSOR_ROTATION the apex tip's position inside the box moves to the
 // opposite corner. This is the point pinned to the real pointer coordinates
 // so the click hotspot always sits exactly at the tip, whichever way it faces.
@@ -23,6 +28,7 @@ const TEXT_INPUT_SELECTOR =
   'input[type="search"], input[type="tel"], input[type="url"], input[type="number"]';
 
 type Mode = 'default' | 'pointer' | 'text';
+type Tone = 'dark' | 'light';
 
 function resolveMode(target: EventTarget | null): Mode {
   if (!(target instanceof Element)) return 'default';
@@ -31,24 +37,38 @@ function resolveMode(target: EventTarget | null): Mode {
   return 'default';
 }
 
+// Sections already tag themselves `data-nav="dark"|"light"` for the nav
+// bar's own tone-flip (see Header.tsx) — reused here instead of
+// mix-blend-mode, which doesn't reliably invert against this site's
+// off-white (not pure-white) section backgrounds.
+function resolveTone(target: EventTarget | null): Tone {
+  if (!(target instanceof Element)) return 'dark';
+  return target.closest('[data-nav="light"]') ? 'light' : 'dark';
+}
+
 /**
  * Sitewide custom cursor — an inverted "A" (the wordmark's apex, rotated
  * 180°) with its hotspot at the tip. Desktop / fine-pointer only; touch and
  * coarse-pointer devices render nothing and keep the native cursor.
  *
  * Position is written straight to the DOM in a rAF loop (never React state)
- * so it tracks the pointer with no lag. Hover mode (default / pointer-outline
- * / native-text) goes through state since it changes far less often than
- * every pointermove.
+ * and eased toward the pointer each frame (POSITION_SMOOTHING) for a smooth
+ * trailing feel rather than a rigid 1:1 follow. Hover mode (default /
+ * pointer-outline / native-text) and tone (black on light sections, white on
+ * dark ones) go through state since they change far less often than every
+ * pointermove.
  */
 export const ArvaCursor = () => {
   const [enabled, setEnabled] = useState(false);
   const [mode, setMode] = useState<Mode>('default');
+  const [tone, setTone] = useState<Tone>('dark');
   const [visible, setVisible] = useState(false);
   const reduced = useReducedMotion();
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const posRef = useRef({ x: -100, y: -100 });
+  const posRef = useRef({ x: -100, y: -100 }); // smoothed, rendered position
+  const targetRef = useRef({ x: -100, y: -100 }); // raw pointer position
   const modeRef = useRef<Mode>('default');
+  const toneRef = useRef<Tone>('dark');
   const rafRef = useRef(0);
 
   useEffect(() => {
@@ -69,13 +89,18 @@ export const ArvaCursor = () => {
     if (!enabled) return;
 
     const onPointerMove = (e: PointerEvent) => {
-      posRef.current.x = e.clientX;
-      posRef.current.y = e.clientY;
+      targetRef.current.x = e.clientX;
+      targetRef.current.y = e.clientY;
       setVisible((v) => v || true);
       const nextMode = resolveMode(e.target);
       if (modeRef.current !== nextMode) {
         modeRef.current = nextMode;
         setMode(nextMode);
+      }
+      const nextTone = resolveTone(e.target);
+      if (toneRef.current !== nextTone) {
+        toneRef.current = nextTone;
+        setTone(nextTone);
       }
     };
     const onLeave = () => setVisible(false);
@@ -85,7 +110,11 @@ export const ArvaCursor = () => {
 
     const tick = () => {
       const el = wrapperRef.current;
-      if (el) el.style.transform = `translate3d(${posRef.current.x}px, ${posRef.current.y}px, 0)`;
+      const pos = posRef.current;
+      const target = targetRef.current;
+      pos.x += (target.x - pos.x) * POSITION_SMOOTHING;
+      pos.y += (target.y - pos.y) * POSITION_SMOOTHING;
+      if (el) el.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
@@ -101,7 +130,9 @@ export const ArvaCursor = () => {
 
   const showCursor = visible && mode !== 'text';
   const isOutline = mode === 'pointer';
+  const cursorColor = tone === 'light' ? '#000000' : '#ffffff';
   const fadeTransition = reduced ? 'none' : 'opacity 150ms linear';
+  const colorTransition = reduced ? 'none' : 'color 150ms linear';
 
   return (
     <>
@@ -140,8 +171,8 @@ export const ArvaCursor = () => {
             width: CURSOR_SIZE,
             height: CURSOR_SIZE,
             transform: `rotate(${CURSOR_ROTATION}deg)`,
-            color: '#ffffff',
-            mixBlendMode: 'difference',
+            color: cursorColor,
+            transition: colorTransition,
           }}
         >
           <svg
