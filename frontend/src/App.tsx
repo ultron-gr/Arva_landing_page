@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import { ArvaCursor } from './components/Cursor/ArvaCursor';
 
 // Below-the-fold routes are lazy — they never load on first paint of the home page.
 const Privacy = lazy(() => import('./pages/Privacy'));
@@ -15,6 +16,7 @@ const RouteFallback = () => (
 export default function App() {
   return (
     <BrowserRouter>
+      <ArvaCursor />
       <Suspense fallback={<RouteFallback />}>
         <Routes>
           <Route path="/" element={<Home />} />

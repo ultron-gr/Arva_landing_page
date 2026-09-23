@@ -9,16 +9,20 @@ export const ArvaWordmark = ({
   className = '',
   fontSize = 'clamp(2.6rem, 12vw, 4.75rem)',
   inheritColor = false,
+  weight = 800,
 }: {
   className?: string;
   /** CSS font-size for the "ARVA" row — defaults to the intro loader's responsive clamp. */
   fontSize?: string;
   /** Inherit `color` from an ancestor instead of the fixed intro-loader white — for contexts (like the adaptive nav) that flip ink color themselves. */
   inheritColor?: boolean;
+  /** Syne weight for the "ARVA" row — defaults to the intro loader's Extrabold. Nav uses a lighter weight; requires that weight's @fontsource CSS to be imported. */
+  weight?: number;
 }) => (
   <div className={`flex select-none flex-col items-center ${className}`} style={{ fontSize }}>
     <div
-      className={`flex items-baseline leading-none font-display font-extrabold uppercase tracking-[-0.01em] text-[1em] ${inheritColor ? 'text-inherit' : 'text-white'}`}
+      style={{ fontWeight: weight }}
+      className={`flex items-baseline leading-none font-display uppercase tracking-[-0.01em] text-[1em] ${inheritColor ? 'text-inherit' : 'text-white'}`}
     >
       <span>A</span>
       <span>R</span>

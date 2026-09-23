@@ -200,7 +200,7 @@ export const Header = () => {
       data-testid="site-header"
       data-tone="dark"
       data-scrolled="false"
-      className="glass-nav fixed left-1/2 top-3 z-50 flex h-14 w-[calc(100%-32px)] -translate-x-1/2 items-center justify-between px-4 md:top-5 md:h-16 md:w-[calc(100%-48px)] md:max-w-[1200px] md:px-7"
+      className="glass-nav fixed left-1/2 top-3 z-50 flex h-14 w-[calc(100%-24px)] -translate-x-1/2 items-center justify-between px-4 md:top-4 md:h-16 md:w-[calc(100%-48px)] md:max-w-[1200px] md:px-7"
     >
       <a
         href="#hero"
@@ -208,7 +208,7 @@ export const Header = () => {
         data-testid="header-logo-link"
         className="block shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--arva-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--nav-ring-offset)]"
       >
-        <ArvaWordmark fontSize="clamp(1.5rem, 3vw, 2.4rem)" inheritColor />
+        <ArvaWordmark fontSize="clamp(1.5rem, 3vw, 2.4rem)" inheritColor weight={500} />
       </a>
 
       {/* Desktop: single row, logo | label | divider | button, each ≥24px apart */}
@@ -249,7 +249,7 @@ export const Header = () => {
             onClick={(e) => {
               if ((e.target as HTMLElement).closest('a')) setOpen(false);
             }}
-            className="glass-nav fixed left-1/2 top-[80px] w-[calc(100%-32px)] -translate-x-1/2 px-4 py-5 md:top-[96px] md:w-[calc(100%-48px)] md:max-w-[1200px] md:px-7 lg:hidden"
+            className="glass-nav glass-nav-drawer fixed left-1/2 top-[80px] w-[calc(100%-24px)] -translate-x-1/2 px-4 py-5 md:top-[96px] md:w-[calc(100%-48px)] md:max-w-[1200px] md:px-7 lg:hidden"
           >
             <div className="flex flex-col items-stretch gap-4">
               {earlyAccessLabel}

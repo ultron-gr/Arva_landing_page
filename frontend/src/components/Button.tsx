@@ -25,7 +25,7 @@ const VARIANT_CLASSES: Record<Variant, string> = {
   // flips with the nav's tone instead of staying hardcoded white),
   // transparent, hover fills white/black
   nav:
-    'nav-btn-border inline-flex items-center justify-center gap-2 rounded-none border bg-transparent text-inherit px-5 py-2.5 min-h-[44px] text-sm font-medium ' +
+    'nav-btn-border inline-flex items-center justify-center gap-2 rounded-full border bg-transparent text-inherit px-5 py-2.5 min-h-[44px] text-sm font-medium ' +
     'transition-colors duration-200 hover:bg-white hover:text-black active:scale-[0.99] ' +
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--arva-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--nav-ring-offset)] ' +
     'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent',

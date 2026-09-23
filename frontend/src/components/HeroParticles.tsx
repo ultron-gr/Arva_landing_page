@@ -16,8 +16,17 @@ import { useReducedMotion } from '../hooks/useReducedMotion';
  * Background only: no text/logo/icons are drawn into the canvas.
  */
 
-const DESKTOP_TOTAL = 2400;
-const MOBILE_TOTAL = 900;
+// Quieter-hero tuning knobs — fractions applied to the ring's original
+// (pre-tuning) values, kept separate so each can be nudged independently.
+const SPOT_DENSITY = 0.5; // fraction of the original particle count
+const SPOT_SIZE = 0.7; // fraction of the original point size
+const SPOT_OPACITY_LIGHT = 0.25; // ceiling for the bright/white core blend
+const SPOT_OPACITY_DARK = 0.35; // ceiling for the overall layer opacity
+const SPOT_SPEED = 0.6; // fraction of the original rotation speed
+const MOBILE_DENSITY_FACTOR = 0.7; // extra density cut under MOBILE_BREAKPOINT, on top of SPOT_DENSITY
+
+const DESKTOP_TOTAL = Math.round(2400 * SPOT_DENSITY);
+const MOBILE_TOTAL = Math.round(900 * SPOT_DENSITY * MOBILE_DENSITY_FACTOR);
 const MOBILE_BREAKPOINT = 768;
 
 const MIN_RADIUS = 2.6;
@@ -30,7 +39,7 @@ const HAZE_DEPTH_JITTER = 1.1;
 // cos(TILT_X) scales the vertical extent, so a large angle reads as a
 // mostly-flattened ellipse rather than a face-on circle.
 const TILT_X = -1.3;
-const ROTATE_SPEED = 0.045; // rad/sec — gentle self-rotation, never pauses
+const ROTATE_SPEED = 0.045 * SPOT_SPEED; // rad/sec — gentle self-rotation, never pauses
 const RING_X_OFFSET = 2.6; // biases the ring right of center, clear of left-aligned text
 
 const POINTER_DAMPING = 0.06; // per-frame lerp toward the cursor target
@@ -63,7 +72,7 @@ const FRAGMENT_SHADER = /* glsl */ `
     if (d > 0.5) discard;
     float alpha = smoothstep(0.5, 0.05, d);
     // A brighter core reads as a small lit sphere rather than a flat dot.
-    float core = smoothstep(0.32, 0.0, d) * 0.6;
+    float core = smoothstep(0.32, 0.0, d) * ${SPOT_OPACITY_LIGHT};
     vec3 shaded = mix(vColor, vec3(1.0), core);
     gl_FragColor = vec4(shaded, alpha * uOpacity);
   }
@@ -152,7 +161,7 @@ class RingScene {
       vertexShader: VERTEX_SHADER,
       fragmentShader: FRAGMENT_SHADER,
       uniforms: {
-        uSize: { value: isMobile ? 8.0 : 10.5 },
+        uSize: { value: (isMobile ? 8.0 : 10.5) * SPOT_SIZE },
         uPixelRatio: { value: pixelRatio },
         uOpacity: { value: 0 },
       },
@@ -207,7 +216,7 @@ class RingScene {
     this.lastElapsedMs = performance.now() - this.startTime;
 
     const opacity = this.material.uniforms.uOpacity;
-    if (opacity.value < 0.92) opacity.value = Math.min(0.92, opacity.value + 0.016);
+    if (opacity.value < SPOT_OPACITY_DARK) opacity.value = Math.min(SPOT_OPACITY_DARK, opacity.value + 0.016);
 
     this.pointerX += (this.pointerTargetX - this.pointerX) * POINTER_DAMPING;
     this.pointerY += (this.pointerTargetY - this.pointerY) * POINTER_DAMPING;
