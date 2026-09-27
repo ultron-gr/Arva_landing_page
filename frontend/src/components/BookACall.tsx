@@ -11,7 +11,7 @@ export const BookACall = ({
   className = '',
   testId = 'book-call-button',
 }: {
-  variant?: 'primary' | 'secondary' | 'utility';
+  variant?: 'primary' | 'secondary' | 'utility' | 'nav';
   className?: string;
   testId?: string;
 }) => {

@@ -1,8 +1,14 @@
 import { Link } from 'react-router-dom';
 import { CONTACT_EMAIL } from '../lib/config';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 /** Plain-language privacy policy — launch placeholder per spec. */
 export default function Privacy() {
+  usePageMeta({
+    title: 'Privacy Policy — ARVA Studios',
+    description: 'How ARVA Studios collects, uses and protects the information you share with us.',
+  });
+
   return (
     <main id="main" className="min-h-screen bg-[#0a0a0a]">
       <div className="mx-auto w-full max-w-3xl px-4 py-20 sm:px-6 lg:px-8">

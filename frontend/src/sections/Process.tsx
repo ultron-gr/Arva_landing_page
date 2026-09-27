@@ -38,12 +38,25 @@ export const Process = () => (
         </h2>
       </Reveal>
 
-      <ol className="mt-14 max-w-3xl space-y-0 divide-y divide-[color:var(--arva-border)]" data-testid="process-steps-list">
+      {/*
+        Mobile-first: base = stacked list (divide-y, no fixed/max height so
+        nothing can clip). lg+ swaps to a 4-up horizontal timeline — divide-x
+        instead of divide-y, big numeral moves to an absolutely-positioned
+        overflow-visible slot above each column so it can render large
+        without ever being cropped by a parent overflow.
+      */}
+      <ol
+        className="mt-14 max-w-3xl divide-y divide-[color:var(--arva-border)] lg:mt-20 lg:grid lg:max-w-none lg:grid-cols-4 lg:divide-y-0 lg:divide-x"
+        data-testid="process-steps-list"
+      >
         {STEPS.map((s, i) => (
-          <li key={s.name} className="py-7">
+          <li key={s.name} className="relative py-7 lg:overflow-visible lg:px-6 lg:pb-0 lg:pt-20 first:lg:pl-0 last:lg:pr-0">
             <Reveal delay={i * 70}>
-              <div className="flex items-start gap-5 sm:gap-8">
-                <span className="font-display text-4xl leading-none big-numeral sm:text-5xl" aria-hidden="true">
+              <div className="flex items-start gap-5 sm:gap-8 lg:block lg:gap-0">
+                <span
+                  className="font-display text-4xl leading-none big-numeral sm:text-5xl lg:absolute lg:left-6 lg:top-0 lg:text-6xl xl:text-7xl"
+                  aria-hidden="true"
+                >
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <div>
@@ -53,7 +66,7 @@ export const Process = () => (
                       {s.when}
                     </span>
                   </h3>
-                  <p className="mt-2 max-w-xl text-sm leading-relaxed text-[color:var(--arva-text-muted)] sm:text-base">{s.desc}</p>
+                  <p className="mt-2 max-w-xl text-sm leading-relaxed text-[color:var(--arva-text-muted)] sm:text-base lg:max-w-none">{s.desc}</p>
                 </div>
               </div>
             </Reveal>
